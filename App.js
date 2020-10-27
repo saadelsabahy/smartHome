@@ -1,0 +1,43 @@
+/**
+ * Sample React Native App
+ * https://github.com/facebook/react-native
+ *
+ * @format
+ * @flow strict-local
+ */
+
+import React from 'react';
+import {
+  SafeAreaView,
+  StyleSheet,
+  ScrollView,
+  View,
+  Text,
+  StatusBar,
+} from 'react-native';
+
+import {Provider as PaperProvider} from 'react-native-paper';
+import {Header} from './src/components';
+import {MAIN_COLOR} from './src/constants/design';
+import {Home} from './src/Screens';
+const App: () => React$Node = () => {
+  return (
+    <PaperProvider>
+      <>
+        <StatusBar backgroundColor={MAIN_COLOR} />
+        <SafeAreaView style={styles.container}>
+          <Home />
+        </SafeAreaView>
+      </>
+    </PaperProvider>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: MAIN_COLOR,
+  },
+});
+
+export default App;
