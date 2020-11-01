@@ -7,6 +7,7 @@ import {
   RoomDeviceItem,
   RoomsItem,
 } from '../../components';
+import {Camera} from '../../components/Camera';
 
 const Home = () => {
   return (
@@ -16,6 +17,7 @@ const Home = () => {
       <FavouriteItem />
       <RoomsItem /> */}
       <Chart />
+      {/*  <Camera /> */}
     </View>
   );
 };

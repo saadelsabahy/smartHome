@@ -12,6 +12,7 @@ export const INACTIVE_CARD = '#0E4764';
 export const ACTIVE_CARD = '#285094';
 export const TEXT_COLOR = '#fff';
 export const FAVOURITE_ICON = '#E44744';
+export const RECORD_BG = '#68C2FE';
 
 export const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get(
   'screen',
