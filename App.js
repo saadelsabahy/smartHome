@@ -19,6 +19,7 @@ import {
 import {Provider as PaperProvider} from 'react-native-paper';
 import {Header} from './src/components';
 import {MAIN_COLOR} from './src/constants/design';
+import AppNavgation from './src/navigation';
 import {Home} from './src/Screens';
 const App: () => React$Node = () => {
   return (
@@ -26,7 +27,7 @@ const App: () => React$Node = () => {
       <>
         <StatusBar backgroundColor={MAIN_COLOR} />
         <SafeAreaView style={styles.container}>
-          <Home />
+          <AppNavgation />
         </SafeAreaView>
       </>
     </PaperProvider>

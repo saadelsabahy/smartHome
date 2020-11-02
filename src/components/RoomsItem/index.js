@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, Text, View, Image} from 'react-native';
+import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
 import {responsiveFontSize} from 'react-native-responsive-dimensions';
 import {
   ACTIVE_CARD,
@@ -9,23 +9,28 @@ import {
 } from '../../constants/design';
 import {CustomText} from '../customText';
 
-const RoomsItem = () => {
+const RoomsItem = ({roomPhoto, roomName, devicesNumber, onRoomPressed}) => {
   return (
-    <View style={styles.container}>
+    <TouchableOpacity
+      style={[styles.container]}
+      activeOpacity={0.9}
+      onPress={onRoomPressed}>
       <View style={styles.imageContainer}>
         <Image
           source={{
-            uri:
-              'https://www.thespruce.com/thmb/X_uj4i4TdVrORb3ec1yrbHoq83k=/2032x1475/filters:fill(auto,1)/GettyImages-1187200939-74336d2a866d4c99853f700cb4ad7d5f.jpg',
+            uri: roomPhoto,
           }}
           style={styles.image}
         />
       </View>
       <View style={styles.detailesContainer}>
-        <CustomText text={'living room'} />
-        <CustomText text={'8 devices'} textStyle={styles.subTitle} />
+        <CustomText text={roomName} />
+        <CustomText
+          text={`${devicesNumber} device`}
+          textStyle={styles.subTitle}
+        />
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
@@ -38,6 +43,8 @@ const styles = StyleSheet.create({
     backgroundColor: ACTIVE_CARD,
     borderRadius: 15,
     overflow: 'hidden',
+    marginEnd: 10,
+    // transform: [{translateY: SCREEN_HEIGHT / 4}],
   },
   imageContainer: {
     width: '100%',

@@ -41,7 +41,7 @@ const RoomDeviceItem = ({deviceName, deviceIcon, deviceStatus}) => {
           style={{backgroundColor: MAIN_COLOR}}
         />
         <Switch
-          value={isSwitchOn}
+          value={deviceStatus}
           onValueChange={onToggleSwitch}
           color={SWITCH_ACTIVE}
           trackColor={{true: SWITCH_ACTIVE, false: SWITCH_INACTIVE}}
@@ -55,12 +55,13 @@ export {RoomDeviceItem};
 
 const styles = StyleSheet.create({
   container: {
-    width: SCREEN_WIDTH / 2 - 10,
+    width: SCREEN_WIDTH / 2 - 20,
     height: SCREEN_HEIGHT / 6,
     backgroundColor: INACTIVE_CARD,
     borderRadius: 15,
     justifyContent: 'space-between',
     padding: 5,
+    margin: 10,
   },
   topRow: {
     flexDirection: 'row',

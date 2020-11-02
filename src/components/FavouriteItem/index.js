@@ -14,19 +14,23 @@ import {
 import {IconButton} from 'react-native-paper';
 import {CustomText} from '../customText';
 import {responsiveFontSize} from 'react-native-responsive-dimensions';
-const FavouriteItem = ({deviceStatus}) => {
+const FavouriteItem = ({deviceStatus, icon, title, subTitle}) => {
   return (
-    <View style={[styles.container]}>
+    <View
+      style={[
+        styles.container,
+        {backgroundColor: deviceStatus ? ACTIVE_CARD : INACTIVE_CARD},
+      ]}>
       <View style={styles.contentContainer}>
         <IconButton
-          icon={'heart-outline'}
+          icon={icon}
           color={deviceStatus ? ACTIVE_ICON : INACTIVE_ICON}
           size={ICON_SIZE_NORMAL}
           style={{marginStart: 0}}
         />
         <View style={styles.centerComponent}>
-          <CustomText text={'fav'} />
-          <CustomText text={'fav'} textStyle={styles.subTitle} />
+          <CustomText text={title} />
+          <CustomText text={subTitle} textStyle={styles.subTitle} />
         </View>
         {deviceStatus && <View style={styles.indicator} />}
       </View>
@@ -38,11 +42,11 @@ export {FavouriteItem};
 const styles = StyleSheet.create({
   container: {
     width: SCREEN_WIDTH / 2 - 20,
-    height: SCREEN_HEIGHT / 10,
-    backgroundColor: ACTIVE_CARD,
+    height: SCREEN_HEIGHT / 12,
     borderRadius: 15,
     justifyContent: 'center',
     alignItems: 'center',
+    marginEnd: 10,
   },
   contentContainer: {
     flexDirection: 'row',
@@ -62,5 +66,6 @@ const styles = StyleSheet.create({
   },
   subTitle: {
     fontSize: responsiveFontSize(1.3),
+    opacity: 0.5,
   },
 });
