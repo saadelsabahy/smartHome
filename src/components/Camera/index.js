@@ -17,7 +17,7 @@ import {
   RECORD_BG,
 } from '../../constants/design';
 import {CustomText} from '../customText';
-const Camera = () => {
+const Camera = ({navigation}) => {
   const cameraRef = useRef();
   const checkPermission = async () => {
     try {
@@ -70,7 +70,7 @@ const Camera = () => {
         icon={'arrow-left'}
         color={'#fff'}
         size={ICON_SIZE_NORMAL}
-        onPress={() => console.log('Pressed')}
+        onPress={() => navigation.goBack()}
         style={{position: 'absolute', top: 10, start: 5}}
       />
       <View style={styles.bottomContainer}>

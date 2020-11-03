@@ -43,7 +43,7 @@ const Home = ({navigation}) => {
       </View>
 
       <View style={styles.headerContainer}>
-        <Header onMenuPressed={() => console.log('pressed')} />
+        <Header onMenuPressed={() => navigation.openDrawer()} />
       </View>
 
       <View style={styles.favouriteListContainer}>

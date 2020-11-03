@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, Text, View, ImageBackground, Image} from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
@@ -17,8 +17,16 @@ import {
 import {favourites} from '../../utils/mockData';
 import * as Animatable from 'react-native-animatable';
 const RoomDetailes = ({navigation, route}) => {
-  console.log(navigation);
+  const [renderList, setrenderList] = useState(false);
   const {photo, roomName, devicesNumbers} = route.params;
+  const onToggleSwitch = (index) => {
+    favourites[index]['active'] = !favourites[index]['active'];
+    setrenderList(!renderList);
+  };
+  const onToggleFavourite = (index) => {
+    favourites[index]['favourite'] = !favourites[index]['favourite'];
+    setrenderList(!renderList);
+  };
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -66,19 +74,26 @@ const RoomDetailes = ({navigation, route}) => {
         <FlatList
           data={favourites}
           style={{flex: 1}}
+          extraData={renderList}
           contentContainerStyle={{
             alignItems: 'center',
             justifyContent: 'space-between',
           }}
           numColumns={2}
           keyExtractor={(item, index) => `${index}`}
-          renderItem={({item: {icon, deviceName, active}, index}) => {
+          renderItem={({
+            item: {icon, deviceName, active, favourite},
+            index,
+          }) => {
             return (
               <Animatable.View delay={800 * index} animation="zoomIn">
                 <RoomDeviceItem
                   deviceIcon={icon}
                   deviceName={deviceName}
                   deviceStatus={active}
+                  onToggleSwitch={() => onToggleSwitch(index)}
+                  favourite={favourite}
+                  onToggleFavourite={() => onToggleFavourite(index)}
                 />
               </Animatable.View>
             );

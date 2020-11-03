@@ -17,10 +17,14 @@ import {
 import {IconButton} from 'react-native-paper';
 import {CustomText} from '../customText';
 import {Switch} from 'react-native-paper';
-const RoomDeviceItem = ({deviceName, deviceIcon, deviceStatus}) => {
-  const [isSwitchOn, setIsSwitchOn] = React.useState(false);
-
-  const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
+const RoomDeviceItem = ({
+  deviceName,
+  deviceIcon,
+  deviceStatus,
+  onToggleSwitch,
+  favourite,
+  onToggleFavourite,
+}) => {
   return (
     <View style={[styles.container]}>
       <View style={styles.topRow}>
@@ -34,10 +38,10 @@ const RoomDeviceItem = ({deviceName, deviceIcon, deviceStatus}) => {
       </View>
       <View style={styles.bottomRow}>
         <IconButton
-          icon={deviceStatus ? 'heart' : 'heart-outline'}
-          color={deviceStatus ? FAVOURITE_ICON : SWITCH_INACTIVE}
+          icon={favourite ? 'heart' : 'heart-outline'}
+          color={favourite ? FAVOURITE_ICON : SWITCH_INACTIVE}
           size={ICON_SIZE_MEDIUM}
-          onPress={() => console.log('Pressed')}
+          onPress={onToggleFavourite}
           style={{backgroundColor: MAIN_COLOR}}
         />
         <Switch

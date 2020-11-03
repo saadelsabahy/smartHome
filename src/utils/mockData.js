@@ -4,6 +4,7 @@ export const favourites = [
     active: true,
     icon: 'lightbulb-on',
     subTitle: 'kitchen',
+    favourite: true,
   },
   {deviceName: 'toaster', active: false, icon: 'toaster', subTitle: 'kitchen'},
   {
@@ -11,10 +12,23 @@ export const favourites = [
     active: true,
     icon: 'microwave',
     subTitle: 'kitchen',
+    favourite: true,
   },
-  {deviceName: 'ac', active: true, icon: 'chip', subTitle: 'kitchen'},
+  {
+    deviceName: 'ac',
+    active: true,
+    favourite: true,
+    icon: 'chip',
+    subTitle: 'kitchen',
+  },
   {deviceName: 'stock1', active: false, icon: 'stocking', subTitle: 'kitchen'},
-  {deviceName: 'stock2', active: true, icon: 'stocking', subTitle: 'kitchen'},
+  {
+    deviceName: 'stock2',
+    favourite: true,
+    active: true,
+    icon: 'stocking',
+    subTitle: 'kitchen',
+  },
 ];
 
 export const Rooms = [
