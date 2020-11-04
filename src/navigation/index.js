@@ -17,6 +17,7 @@ import {
   ACTIVE_ICON,
 } from '../constants/design';
 import Icon from 'react-native-vector-icons/Ionicons';
+import CircularRemote from '../components/CircleSlider';
 
 const Stack = createStackNavigator();
 
@@ -71,6 +72,26 @@ const DrawerNavigator = () => {
       <Drawer.Screen
         name="Camera"
         component={Camera}
+        options={{
+          drawerIcon: ({focused}) => (
+            <Icon
+              name={'camera-outline'}
+              color={focused ? ACTIVE_ICON : INACTIVE_ICON}
+              size={ICON_SIZE_NORMAL}
+            />
+          ),
+          drawerLabel: ({focused}) => (
+            <CustomText
+              text={'camera chat'}
+              textStyle={{color: focused ? ACTIVE_ICON : INACTIVE_ICON}}
+            />
+          ),
+        }}
+      />
+
+      <Drawer.Screen
+        name="CircularSlider"
+        component={CircularRemote}
         options={{
           drawerIcon: ({focused}) => (
             <Icon

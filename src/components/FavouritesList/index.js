@@ -17,7 +17,7 @@ const FavouritesList = () => {
         <FlatList
           contentContainerStyle={{
             flexGrow: 1,
-            justifyContent: 'center',
+            justifyContent: 'space-evenly',
           }}
           numColumns={favourites.length / 2}
           showsVerticalScrollIndicator={false}
