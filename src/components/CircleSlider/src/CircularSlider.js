@@ -1,341 +1,163 @@
-import React, {PureComponent} from 'react';
-import {PanResponder, View} from 'react-native';
+import React, {Component} from 'react';
+import {PanResponder, View, Dimensions} from 'react-native';
 import Svg, {
+  Path,
   Circle,
   G,
   Text,
-  LinearGradient,
-  Path,
   Defs,
+  LinearGradient,
   Stop,
 } from 'react-native-svg';
-import range from 'lodash.range';
-import {interpolateHcl as interpolateGradient} from 'd3-interpolate';
-import ClockFace from './ClockFace';
-import PropTypes from 'prop-types';
 
-function calculateArcColor(
-  index0,
-  segments,
-  gradientColorFrom,
-  gradientColorTo,
-) {
-  const interpolate = interpolateGradient(gradientColorFrom, gradientColorTo);
+export default class CircleSlider extends Component {
+  constructor(props) {
+    super(props);
 
-  return {
-    fromColor: interpolate(index0 / segments),
-    toColor: interpolate((index0 + 1) / segments),
-  };
-}
-
-function calculateArcCircle(
-  index0,
-  segments,
-  radius,
-  startAngle0 = 0,
-  angleLength0 = 2 * Math.PI,
-) {
-  // Add 0.0001 to the possible angle so when start = stop angle, whole circle is drawn
-  const startAngle = startAngle0 % (2 * Math.PI);
-  const angleLength = angleLength0 % (2 * Math.PI);
-  const index = index0 + 1;
-  const fromAngle = (angleLength / segments) * (index - 1) + startAngle;
-  const toAngle = (angleLength / segments) * index + startAngle;
-  const fromX = radius * Math.sin(fromAngle);
-  const fromY = -radius * Math.cos(fromAngle);
-  const realToX = radius * Math.sin(toAngle);
-  const realToY = -radius * Math.cos(toAngle);
-
-  // add 0.005 to start drawing a little bit earlier so segments stick together
-  const toX = radius * Math.sin(toAngle + 0.005);
-  const toY = -radius * Math.cos(toAngle + 0.005);
-
-  return {
-    fromX,
-    fromY,
-    toX,
-    toY,
-    realToX,
-    realToY,
-  };
-}
-
-function getGradientId(index) {
-  return `gradient${index}`;
-}
-
-export default class CircularSlider extends PureComponent {
-  static propTypes = {
-    onUpdate: PropTypes.func.isRequired,
-    startAngle: PropTypes.number.isRequired,
-    angleLength: PropTypes.number.isRequired,
-    segments: PropTypes.number,
-    strokeWidth: PropTypes.number,
-    radius: PropTypes.number,
-    gradientColorFrom: PropTypes.string,
-    gradientColorTo: PropTypes.string,
-    showClockFace: PropTypes.bool,
-    clockFaceColor: PropTypes.string,
-    bgCircleColor: PropTypes.string,
-    stopIcon: PropTypes.element,
-    startIcon: PropTypes.element,
-    currentValue: PropTypes.string.isRequired,
-  };
-
-  static defaultProps = {
-    segments: 5,
-    strokeWidth: 40,
-    radius: 145,
-    gradientColorFrom: '#ff9800',
-    gradientColorTo: '#ffcf00',
-    clockFaceColor: '#9d9d9d',
-    bgCircleColor: '#171717',
-    currentValue: '15',
-  };
-
-  state = {
-    circleCenterX: false,
-    circleCenterY: false,
-  };
+    this.state = {
+      angle: this.props.value,
+      xCenter: 0,
+      yCenter: 0,
+    };
+  }
 
   componentWillMount() {
-    this._sleepPanResponder = PanResponder.create({
-      onMoveShouldSetPanResponder: (evt, gestureState) => true,
-      onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
-
-      onPanResponderMove: (evt, {moveX, moveY}) => {
-        const {circleCenterX, circleCenterY} = this.state;
-        const {angleLength, startAngle, onUpdate} = this.props;
-
-        const currentAngleStop = (startAngle + angleLength) % (2 * Math.PI);
-        let newAngle =
-          Math.atan2(moveY - circleCenterY, moveX - circleCenterX) +
-          Math.PI / 2;
-
-        if (newAngle < 0) {
-          newAngle += 2 * Math.PI;
-        }
-
-        let newAngleLength = currentAngleStop - newAngle;
-
-        if (newAngleLength < 0) {
-          newAngleLength += 2 * Math.PI;
-        }
-
-        onUpdate({
-          startAngle: newAngle,
-          angleLength: newAngleLength % (2 * Math.PI),
-        });
-      },
-    });
-
-    this._wakePanResponder = PanResponder.create({
-      onMoveShouldSetPanResponder: (evt, gestureState) => true,
-      onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
-
-      onPanResponderMove: (evt, {moveX, moveY}) => {
-        const {circleCenterX, circleCenterY} = this.state;
-        const {angleLength, startAngle, onUpdate} = this.props;
-
-        let newAngle =
-          Math.atan2(moveY - circleCenterY, moveX - circleCenterX) +
-          Math.PI / 2;
-        let newAngleLength = (newAngle - startAngle) % (2 * Math.PI);
-
-        if (newAngleLength < 0) {
-          newAngleLength += 2 * Math.PI;
-        }
-
-        onUpdate({startAngle, angleLength: newAngleLength});
+    this._panResponder = PanResponder.create({
+      onStartShouldSetPanResponder: (e, gs) => true,
+      onStartShouldSetPanResponderCapture: (e, gs) => true,
+      onMoveShouldSetPanResponder: (e, gs) => true,
+      onMoveShouldSetPanResponderCapture: (e, gs) => true,
+      onPanResponderMove: (e, gs) => {
+        let xOrigin =
+          this.state.xCenter - (this.props.dialRadius + this.props.btnRadius);
+        let yOrigin =
+          this.state.yCenter - (this.props.dialRadius + this.props.btnRadius);
+        let a = this.cartesianToPolar(gs.moveX - xOrigin, gs.moveY - yOrigin);
+        this.setState({angle: a});
       },
     });
   }
 
-  onLayout = () => {
-    this.setCircleCenter();
-  };
+  polarToCartesian(angle) {
+    let r = this.props.dialRadius;
+    let hC = this.props.dialRadius + this.props.btnRadius;
+    let a = ((angle - 90) * Math.PI) / 180.0;
 
-  setCircleCenter = () => {
-    this._circle.measure((x, y, w, h, px, py) => {
-      const halfOfContainer = this.getContainerWidth() / 2;
-      this.setState({
-        circleCenterX: px + halfOfContainer,
-        circleCenterY: py + halfOfContainer,
-      });
+    let x = hC + r * Math.cos(a);
+    let y = hC + r * Math.sin(a);
+    return {x, y};
+  }
+
+  cartesianToPolar(x, y) {
+    let hC = this.props.dialRadius + this.props.btnRadius;
+
+    if (x === 0) {
+      return y > hC ? 0 : 180;
+    } else if (y === 0) {
+      return x > hC ? 90 : 270;
+    } else {
+      return (
+        Math.round((Math.atan((y - hC) / (x - hC)) * 180) / Math.PI) +
+        (x > hC ? 90 : 270)
+      );
+    }
+  }
+
+  handleMeasure = (ox, oy, width, height, px, py) => {
+    this.setState({
+      xCenter: px + (this.props.dialRadius + this.props.btnRadius),
+      yCenter: py + (this.props.dialRadius + this.props.btnRadius),
     });
   };
 
-  getContainerWidth() {
-    const {strokeWidth, radius} = this.props;
-    return strokeWidth + radius * 2 + 2;
-  }
+  doStuff = () => {
+    this.refs.circleslider.measure(this.handleMeasure);
+  };
 
   render() {
-    const {
-      startAngle,
-      angleLength,
-      segments,
-      strokeWidth,
-      radius,
-      gradientColorFrom,
-      gradientColorTo,
-      bgCircleColor,
-      showClockFace,
-      clockFaceColor,
-      startIcon,
-      stopIcon,
-      currentValue,
-    } = this.props;
-
-    const containerWidth = this.getContainerWidth();
-
-    const start = calculateArcCircle(
-      0,
-      segments,
-      radius,
-      startAngle,
-      angleLength,
-    );
-    const stop = calculateArcCircle(
-      segments - 1,
-      segments,
-      radius,
-      startAngle,
-      angleLength,
-    );
+    let width = (this.props.dialRadius + this.props.btnRadius) * 2;
+    let bR = this.props.btnRadius;
+    let dR = this.props.dialRadius;
+    let startCoord = this.polarToCartesian(this.props.startCoord);
+    let endCoord = this.polarToCartesian(this.state.angle);
 
     return (
-      <View
-        style={{width: containerWidth, height: containerWidth}}
-        onLayout={this.onLayout}
-        /* key={scrollY} */
-      >
+      <View style={{flex: 1}}>
         <Svg
-          height={containerWidth}
-          width={containerWidth}
-          ref={(circle) => (this._circle = circle)}>
+          onLayout={this.doStuff}
+          ref="circleslider"
+          width={width}
+          height={width}>
           <Defs>
-            {range(segments).map((i) => {
-              const {fromX, fromY, toX, toY} = calculateArcCircle(
-                i,
-                segments,
-                radius,
-                startAngle,
-                angleLength,
-              );
-              const {fromColor, toColor} = calculateArcColor(
-                i,
-                segments,
-                gradientColorFrom,
-                gradientColorTo,
-              );
-              return (
-                <LinearGradient
-                  key={i}
-                  id={getGradientId(i)}
-                  x1={fromX.toFixed(2)}
-                  y1={fromY.toFixed(2)}
-                  x2={toX.toFixed(2)}
-                  y2={toY.toFixed(2)}>
-                  <Stop offset="0%" stopColor={fromColor} />
-                  <Stop offset="1" stopColor={toColor} />
-                </LinearGradient>
-              );
-            })}
+            <LinearGradient id="gradient1" x1="0%" y1="0%" x2="100%" y2="0%">
+              <Stop offset="0%" stopColor={this.props.startGradient} />
+              <Stop offset="100%" stopColor={this.props.endGradient} />
+            </LinearGradient>
           </Defs>
+          <Circle
+            r={dR}
+            cx={width / 2}
+            cy={width / 2}
+            stroke={this.props.backgroundColor}
+            strokeWidth={25}
+            fill="none"
+          />
+          <Text
+            x={width / 2}
+            y={width / 2 + 50}
+            fontSize={14}
+            fill={this.props.textColor}
+            textAnchor="middle">
+            {`Start Coord X: ${startCoord.x}, Y: ${startCoord.y}`}
+          </Text>
+          <Text
+            x={width / 2}
+            y={width / 2}
+            fontSize={this.props.textSize}
+            fill={this.props.textColor}
+            textAnchor="middle">
+            {this.props.showValue &&
+              this.props.onValueChange(this.state.angle) + ''}
+          </Text>
+          <Path
+            stroke={'url(#gradient1)'}
+            strokeWidth={this.props.dialWidth}
+            fill="none"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d={`M${startCoord.x} ${startCoord.y} A ${dR} ${dR} 1 ${
+              (this.props.startCoord + 180) % 360 > this.state.angle ? 1 : 0
+            } 0 ${endCoord.x} ${endCoord.y}`}
+          />
 
-          {/*
-            ##### Circle
-          */}
-
-          <G
-            transform={{
-              translate: `${strokeWidth / 2 + radius + 1}, ${
-                strokeWidth / 2 + radius + 1
-              }`,
-            }}>
+          <G x={endCoord.x - bR} y={endCoord.y - bR}>
             <Circle
-              r={radius}
-              strokeWidth={strokeWidth}
-              fill="transparent"
-              stroke={bgCircleColor}
+              r={bR}
+              cx={bR}
+              cy={bR}
+              fill={'yellow'}
+              {...this._panResponder.panHandlers}
             />
-            {showClockFace && (
-              <ClockFace
-                r={radius - strokeWidth / 2}
-                stroke={clockFaceColor}
-                currentValue={currentValue}
-                gradientColorFrom={gradientColorFrom}
-              />
-            )}
-            {range(segments).map((i) => {
-              const {fromX, fromY, toX, toY} = calculateArcCircle(
-                i,
-                segments,
-                radius,
-                startAngle,
-                angleLength,
-              );
-              const d = `M ${fromX.toFixed(2)} ${fromY.toFixed(
-                2,
-              )} A ${radius} ${radius} 0 0 1 ${toX.toFixed(2)} ${toY.toFixed(
-                2,
-              )}`;
-
-              return (
-                <Path
-                  d={d}
-                  key={i}
-                  strokeWidth={strokeWidth}
-                  stroke={`url(#${getGradientId(i)})`}
-                  fill="transparent"
-                />
-              );
-            })}
-
-            {/*
-              ##### Stop Icon
-            */}
-
-            <G
-              fill={gradientColorTo}
-              transform={{translate: `${stop.toX}, ${stop.toY}`}}
-              onPressIn={() =>
-                this.setState({angleLength: angleLength + Math.PI / 2})
-              }
-              {...this._wakePanResponder.panHandlers}>
-              <Circle
-                r={(strokeWidth - 1) / 2}
-                fill={bgCircleColor}
-                stroke={gradientColorTo}
-                strokeWidth="1"
-              />
-              {stopIcon}
-            </G>
-
-            {/*
-              ##### Start Icon
-            */}
-
-            {/*   <G
-              fill={gradientColorFrom}
-              transform={{ translate: `${start.fromX}, ${start.fromY}` }}
-              onPressIn={() => this.setState({ startAngle: startAngle - Math.PI / 2, angleLength: angleLength + Math.PI / 2 })}
-              {...this._sleepPanResponder.panHandlers}
-            >
-              <Circle
-                r={(strokeWidth - 1) / 2}
-                fill={bgCircleColor}
-                stroke={gradientColorFrom}
-                strokeWidth="1"
-              />
-              {
-                startIcon
-              }
-            </G> */}
           </G>
         </Svg>
       </View>
     );
   }
 }
+
+CircleSlider.defaultProps = {
+  btnRadius: 13,
+  dialRadius: 130,
+  dialWidth: 25,
+  textColor: 'white',
+  textSize: 50,
+  value: 0,
+  xCenter: Dimensions.get('window').width / 2,
+  yCenter: Dimensions.get('window').height / 2,
+  showValue: true,
+  startGradient: '#12D8FA',
+  endGradient: '#A6FFCB',
+  backgroundColor: 'white',
+  startCoord: 0,
+  onValueChange: (x) => x,
+};
