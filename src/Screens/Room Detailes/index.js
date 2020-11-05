@@ -66,7 +66,7 @@ const RoomDetailes = ({navigation, route}) => {
           </View>
           <Switch
             value={true}
-            // onValueChange={onToggleSwitch}
+            onValueChange={onToggleSwitch}
             color={SWITCH_ACTIVE}
             trackColor={{true: SWITCH_ACTIVE, false: SWITCH_INACTIVE}}
           />
@@ -86,7 +86,7 @@ const RoomDetailes = ({navigation, route}) => {
             index,
           }) => {
             return (
-              <Animatable.View delay={800 * index} animation="zoomIn">
+              <Animatable.View delay={400 * index} animation="zoomIn">
                 <RoomDeviceItem
                   deviceIcon={icon}
                   deviceName={deviceName}
@@ -94,6 +94,9 @@ const RoomDetailes = ({navigation, route}) => {
                   onToggleSwitch={() => onToggleSwitch(index)}
                   favourite={favourite}
                   onToggleFavourite={() => onToggleFavourite(index)}
+                  onPress={() => {
+                    navigation.navigate('Controller');
+                  }}
                 />
               </Animatable.View>
             );

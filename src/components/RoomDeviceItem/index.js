@@ -1,5 +1,5 @@
-import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import React, {useState} from 'react';
+import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import {
   SCREEN_HEIGHT,
   SCREEN_WIDTH,
@@ -21,15 +21,22 @@ const RoomDeviceItem = ({
   deviceName,
   deviceIcon,
   deviceStatus,
-  onToggleSwitch,
+  // onToggleSwitch,
   favourite,
   onToggleFavourite,
+  onPress,
 }) => {
+  const [isSwitchOn, setIsSwitchOn] = React.useState(false);
+
+  const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
   return (
-    <View style={[styles.container]}>
+    <TouchableOpacity
+      style={[styles.container]}
+      onPress={onPress}
+      activeOpacity={0.9}>
       <View style={styles.topRow}>
         <IconButton
-          icon="lightbulb-on"
+          icon={deviceIcon}
           color={deviceStatus ? ACTIVE_ICON : INACTIVE_ICON}
           size={ICON_SIZE_NORMAL}
           onPress={() => console.log('Pressed')}
@@ -44,14 +51,15 @@ const RoomDeviceItem = ({
           onPress={onToggleFavourite}
           style={{backgroundColor: MAIN_COLOR}}
         />
-        <Switch
+        <Switch value={isSwitchOn} onValueChange={onToggleSwitch} />
+        {/*  <Switch
           value={deviceStatus}
           onValueChange={onToggleSwitch}
           color={SWITCH_ACTIVE}
           trackColor={{true: SWITCH_ACTIVE, false: SWITCH_INACTIVE}}
-        />
+        /> */}
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
@@ -72,6 +80,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   bottomRow: {
+    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',

@@ -7,3 +7,4 @@ export * from './Chart';
 export * from './RoomsList';
 export * from './FavouritesList';
 export * from './Drawer';
+export * from './ControlBtn';

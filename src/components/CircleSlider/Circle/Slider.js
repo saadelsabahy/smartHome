@@ -14,6 +14,7 @@ import range from 'lodash.range';
 import Cursor from './Cursor';
 import {normalizeAngle} from './Math';
 import Animated, {Easing} from 'react-native-reanimated';
+import {ACTIVE_ICON, INACTIVE_ICON} from '../../../constants/design';
 const {
   Value,
   multiply,
@@ -32,7 +33,7 @@ const {
 } = Animated;
 
 const {width} = Dimensions.get('window');
-const size = width - 32;
+const size = width / 1.5;
 const padding = 25;
 const radius = size / 2 - padding;
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
@@ -60,8 +61,8 @@ export default ({r, stroke, currentValue, gradientColorFrom}) => {
         <Svg width={size} height={size}>
           <Defs>
             <LinearGradient id="grad" x1="0" y1="0" x2="100%" y2="0">
-              <Stop offset="0" stopColor="#f7cd46" />
-              <Stop offset="1" stopColor="#ef9837" />
+              <Stop offset="0" stopColor={ACTIVE_ICON} />
+              <Stop offset="1" stopColor={INACTIVE_ICON} />
             </LinearGradient>
           </Defs>
           <AnimatedCircle
@@ -70,8 +71,18 @@ export default ({r, stroke, currentValue, gradientColorFrom}) => {
             fill="none"
             cx={size / 2}
             cy={size / 2}
-            r={radius}
-          />
+            r={radius}>
+            <G>
+              <Text
+                fill={'#fff'}
+                fontSize="25"
+                textAnchor="middle"
+                letterSpacing={4}>
+                {250}
+              </Text>
+            </G>
+          </AnimatedCircle>
+
           <AnimatedCircle
             strokeWidth={padding * 2}
             stroke="url(#grad)"

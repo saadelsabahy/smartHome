@@ -15,6 +15,7 @@ const FavouritesList = () => {
         style={{flex: 1}}
         contentContainerStyle={{flexGrow: 1, justifyContent: 'center'}}>
         <FlatList
+          keyExtractor={(item, index) => `${index}`}
           contentContainerStyle={{
             flexGrow: 1,
             justifyContent: 'space-evenly',
@@ -26,8 +27,9 @@ const FavouritesList = () => {
           renderItem={({item: {active, deviceName, icon, subTitle}, index}) => {
             return (
               <Animatable.View
+                key={`${index}`}
                 animation="slideInUp"
-                delay={index * 1000}
+                delay={index * 500}
                 /* style={{flex: 1, backgroundColor: 'red'}} */
               >
                 <FavouriteItem

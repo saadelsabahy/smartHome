@@ -29,6 +29,7 @@ function RoomsStack() {
       }}>
       <Stack.Screen name="Home" component={Home} />
       <Stack.Screen name="RoomDetailes" component={RoomDetailes} />
+      <Stack.Screen name="Controller" component={CircularRemote} />
     </Stack.Navigator>
   );
 }
@@ -72,26 +73,6 @@ const DrawerNavigator = () => {
       <Drawer.Screen
         name="Camera"
         component={Camera}
-        options={{
-          drawerIcon: ({focused}) => (
-            <Icon
-              name={'camera-outline'}
-              color={focused ? ACTIVE_ICON : INACTIVE_ICON}
-              size={ICON_SIZE_NORMAL}
-            />
-          ),
-          drawerLabel: ({focused}) => (
-            <CustomText
-              text={'camera chat'}
-              textStyle={{color: focused ? ACTIVE_ICON : INACTIVE_ICON}}
-            />
-          ),
-        }}
-      />
-
-      <Drawer.Screen
-        name="CircularSlider"
-        component={CircularRemote}
         options={{
           drawerIcon: ({focused}) => (
             <Icon
