@@ -21,7 +21,11 @@ const CustomDrawer = (props) => {
         <DrawerItemList {...props} />
       </DrawerContentScrollView>
       <View style={styles.imageContainer}>
-        <Image source={require('../../assets/images/ev_side_logo.png')} />
+        <Image
+          source={require('../../assets/images/ev_side_logo.png')}
+          style={styles.image}
+          resizeMode="contain"
+        />
       </View>
     </View>
   );
@@ -34,8 +38,10 @@ const styles = StyleSheet.create({
   imageContainer: {
     width: '100%',
     height: SCREEN_HEIGHT / 9,
-    position: 'absolute',
-    bottom: 0,
+  },
+  image: {
+    width: '50%',
+    height: '100%',
   },
 });
 

@@ -65,8 +65,8 @@ const RoomDetailes = ({navigation, route}) => {
             />
           </View>
           <Switch
-            value={true}
-            onValueChange={onToggleSwitch}
+            value={favourites.some((item) => item.active)}
+            onValueChange={() => {}}
             color={SWITCH_ACTIVE}
             trackColor={{true: SWITCH_ACTIVE, false: SWITCH_INACTIVE}}
           />
@@ -74,6 +74,7 @@ const RoomDetailes = ({navigation, route}) => {
         <FlatList
           data={favourites}
           style={{flex: 1}}
+          overScrollMode="never"
           extraData={renderList}
           contentContainerStyle={{
             alignItems: 'center',
@@ -95,7 +96,8 @@ const RoomDetailes = ({navigation, route}) => {
                   favourite={favourite}
                   onToggleFavourite={() => onToggleFavourite(index)}
                   onPress={() => {
-                    navigation.navigate('Controller');
+                    console.log(deviceName);
+                    deviceName == 'ac' && navigation.navigate('Controller');
                   }}
                 />
               </Animatable.View>

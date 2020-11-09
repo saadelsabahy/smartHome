@@ -13,7 +13,8 @@ const FavouritesList = () => {
         horizontal
         showsHorizontalScrollIndicator={false}
         style={{flex: 1}}
-        contentContainerStyle={{flexGrow: 1, justifyContent: 'center'}}>
+        contentContainerStyle={{flexGrow: 1, justifyContent: 'center'}}
+        overScrollMode="never">
         <FlatList
           keyExtractor={(item, index) => `${index}`}
           contentContainerStyle={{
@@ -24,6 +25,7 @@ const FavouritesList = () => {
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
           data={favourites}
+          overScrollMode="never"
           renderItem={({item: {active, deviceName, icon, subTitle}, index}) => {
             return (
               <Animatable.View

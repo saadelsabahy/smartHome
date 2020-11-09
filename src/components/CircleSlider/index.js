@@ -16,14 +16,23 @@ import Slider from './Circle/Slider';
 import {ControlButton} from '../ControlBtn';
 import {CustomText} from '../customText';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-const CircularRemote = () => {
+const CircularRemote = ({navigation}) => {
   const [startAngle, setstartAngle] = useState(0);
   const [angleLength, setangleLength] = useState(0);
-  const [currentValue, setcurrentValue] = useState(0);
+  const [currentValue, setcurrentValue] = useState(18);
 
   const iconssColor = (status) => (status ? ACTIVE_ICON : INACTIVE_ICON);
   return (
     <View style={styles.container}>
+      <IconButton
+        icon={'arrow-left'}
+        color={'#fff'}
+        size={ICON_SIZE_NORMAL}
+        style={styles.back}
+        onPress={() => {
+          navigation.goBack();
+        }}
+      />
       <View style={styles.circularContainer}>
         <View
           style={{...styles.rowContainer, flex: 0, justifyContent: 'center'}}>
@@ -167,5 +176,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     textAlign: 'center',
     fontSize: 100,
+  },
+  back: {
+    position: 'absolute',
+    top: 10,
+    backgroundColor: MAIN_COLOR,
+    zIndex: 1000,
   },
 });

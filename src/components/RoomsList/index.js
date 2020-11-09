@@ -18,6 +18,7 @@ const RoomsList = ({onRoomPressed}) => {
             alignItems: 'center',
           }}
           bounces={false}
+          overScrollMode="never"
           showsHorizontalScrollIndicator={false}
           data={Rooms}
           keyExtractor={(item, index) => `${index}`}
