@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -21,7 +21,14 @@ import {Header} from './src/components';
 import {MAIN_COLOR} from './src/constants/design';
 import AppNavgation from './src/navigation';
 import {Home} from './src/Screens';
+import RNBootSplash from 'react-native-bootsplash';
 const App: () => React$Node = () => {
+  useEffect(() => {
+    setTimeout(() => {
+      RNBootSplash.hide({duration: 250});
+    }, 1000);
+    return () => {};
+  }, []);
   return (
     <PaperProvider>
       <>
