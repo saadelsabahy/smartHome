@@ -98,7 +98,6 @@ const styles = StyleSheet.create({
   },
   roomsListContainer: {
     flex: 1,
-    paddingTop: 10,
-    paddingStart: 10,
+    padding: 10,
   },
 });
