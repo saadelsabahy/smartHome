@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: SCREEN_HEIGHT / 7,
     alignItems: 'center',
-    marginStart: 10,
+    paddingStart: 7,
     borderBottomWidth: 0.5,
     borderColor: SECONDARY_COLOR,
   },
