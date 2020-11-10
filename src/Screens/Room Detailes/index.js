@@ -29,10 +29,21 @@ const RoomDetailes = ({navigation, route}) => {
   };
   return (
     <View style={styles.container}>
+     
       <ImageBackground
         source={{uri: photo}}
         style={styles.imageContainer}
         resizeMode="cover">
+       
+        <LinearGradient
+          colors={['#ffffff00', MAIN_COLOR]}
+          style={{
+            position: 'absolute',
+            width: '100%',
+            height: '100%',
+          }}
+          locations={[0,.9999]}
+        />
         <View style={styles.backContainer}>
           <IconButton
             icon={'arrow-left'}
@@ -42,20 +53,12 @@ const RoomDetailes = ({navigation, route}) => {
             style={{backgroundColor: MAIN_COLOR, zIndex: 1000}}
           />
         </View>
-        <LinearGradient
-          colors={['#ffffff00', MAIN_COLOR]}
-          style={{
-            position: 'absolute',
-            width: '100%',
-            height: '100%',
-          }}
-          locations={[0, 0.999]}
-        />
       </ImageBackground>
-      <LinearGradient
-        colors={['#ffffff00', MAIN_COLOR]}
+      <View
+        // colors={['#ffffff00', MAIN_COLOR]}
+        //locations={[0, 0.999]}
         style={styles.dataContainer}
-        locations={[0, 0.999]}>
+        >
         <View style={styles.headerData}>
           <View>
             <CustomText text={roomName} textStyle={styles.roomName} />
@@ -104,7 +107,7 @@ const RoomDetailes = ({navigation, route}) => {
             );
           }}
         />
-      </LinearGradient>
+      </View>
     </View>
   );
 };
@@ -115,10 +118,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: MAIN_COLOR,
-    opacity: 0.9,
+    
   },
   imageContainer: {
-    height: SCREEN_HEIGHT / 3,
+    height: SCREEN_HEIGHT*.3,
     width: SCREEN_WIDTH,
   },
   image: {
@@ -128,6 +131,7 @@ const styles = StyleSheet.create({
   dataContainer: {
     flex: 1,
     backgroundColor: MAIN_COLOR,
+     height: SCREEN_HEIGHT *.7,
   },
   headerData: {
     width: '90%',

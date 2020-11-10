@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet, TextInput} from 'react-native';
-import CircularSlider from './src/CircularSlider';
+
 import {IconButton} from 'react-native-paper';
 import {
   ACTIVE_CARD,
@@ -12,7 +12,7 @@ import {
   SCREEN_WIDTH,
   SECONDARY_COLOR,
 } from '../../constants/design';
-import Slider from './Circle/Slider';
+// import Slider from './Circle/Slider';
 import {ControlButton} from '../ControlBtn';
 import {CustomText} from '../customText';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -167,6 +167,8 @@ const styles = StyleSheet.create({
     backgroundColor: SECONDARY_COLOR,
     borderRadius: 20,
     padding: 20,
+    justifyContent:'center',
+    alignItems:'center'
   },
   icon: {marginStart: 0, borderColor: ACTIVE_ICON, borderWidth: 0.5},
   input: {

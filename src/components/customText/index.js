@@ -12,7 +12,7 @@ const CustomText = ({text, textStyle, ...props}) => {
 };
 const styles = StyleSheet.create({
   text: {
-    fontFamily: 'DroidArabicKufi',
+    // fontFamily: 'DroidArabicKufi',
     textTransform: 'capitalize',
     fontSize: responsiveFontSize(1.8),
     color: TEXT_COLOR,

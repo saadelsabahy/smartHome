@@ -32,7 +32,7 @@ const App: () => React$Node = () => {
   return (
     <PaperProvider>
       <>
-        <StatusBar backgroundColor={MAIN_COLOR} />
+        <StatusBar backgroundColor={MAIN_COLOR} barStyle='light-content'/>
         <SafeAreaView style={styles.container}>
           <AppNavgation />
         </SafeAreaView>

@@ -8,6 +8,8 @@ target 'smartHome' do
 
   use_react_native!(:path => config["reactNativePath"])
 
+  pod 'react-native-camera-kit', :path => '../node_modules/react-native-camera-kit'
+
   target 'smartHomeTests' do
     inherit! :complete
     # Pods for testing
@@ -22,6 +24,8 @@ target 'smartHome' do
     flipper_post_install(installer)
   end
 end
+
+
 
 target 'smartHome-tvOS' do
   # Pods for smartHome-tvOS

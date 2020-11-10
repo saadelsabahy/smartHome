@@ -1,5 +1,5 @@
 import React, {useRef, useEffect} from 'react';
-import {View, Text, PermissionsAndroid, StyleSheet} from 'react-native';
+import {View, Text, PermissionsAndroid, StyleSheet,Platform} from 'react-native';
 import {
   CameraKitCamera,
   CameraKitCameraScreen,
@@ -21,7 +21,8 @@ const Camera = ({navigation}) => {
   const cameraRef = useRef();
   const checkPermission = async () => {
     try {
-      const granted = await PermissionsAndroid.request(
+      if (Platform.OS=='android') {
+        const granted = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.CAMERA,
         {
           title: 'CameraExample App Camera Permission',
@@ -34,6 +35,7 @@ const Camera = ({navigation}) => {
         console.log('Garanted');
       } else {
         alert('CAMERA permission denied');
+      }
       }
     } catch (err) {
       alert('Camera permission err', err);
@@ -71,7 +73,7 @@ const Camera = ({navigation}) => {
         color={'#fff'}
         size={ICON_SIZE_NORMAL}
         onPress={() => navigation.goBack()}
-        style={{position: 'absolute', top: 10, start: 5}}
+        style={{position: 'absolute', top: 10, start: 5,backgroundColor:MAIN_COLOR}}
       />
       <View style={styles.bottomContainer}>
         <View style={styles.iconContainer}>
