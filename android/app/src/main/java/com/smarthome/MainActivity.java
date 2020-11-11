@@ -1,4 +1,4 @@
-package com.smarthome;
+package com.evisionsmarthomee;
 import android.os.Bundle;
 import com.facebook.react.ReactActivity;
 import com.zoontek.rnbootsplash.RNBootSplash;
