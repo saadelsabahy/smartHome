@@ -31,7 +31,7 @@ const FavouritesList = () => {
               <Animatable.View
                 key={`${index}`}
                 animation="slideInUp"
-                delay={index * 500}
+                delay={index * 800}
                 /* style={{flex: 1, backgroundColor: 'red'}} */
               >
                 <FavouriteItem

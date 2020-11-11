@@ -24,7 +24,7 @@ const RoomsList = ({onRoomPressed}) => {
           keyExtractor={(item, index) => `${index}`}
           renderItem={({item: {devicesNumbers, photo, roomName}, index}) => {
             return (
-              <Animatable.View animation="fadeInRight" delay={index * 1000}>
+              <Animatable.View animation="fadeInRight" delay={index * 800}>
                 <RoomsItem
                   roomPhoto={photo}
                   roomName={roomName}
